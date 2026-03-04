@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PathVet.org — Veterinary Pathology Resource</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1a18;
+    --ink-soft: #4a4a46;
+    --ink-muted: #8a8a84;
+    --rule: #d8d6cf;
+    --bg: #f9f8f4;
+    --bg-warm: #f2f0ea;
+    --accent: #2d5a3d;
+    --accent-light: #e8f0eb;
+    --accent-pale: #f4f7f5;
+    --red: #8b2a2a;
+    --gold: #9a7b3a;
+    --white: #ffffff;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.7;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── UTILITY ── */
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 40px; }
+  .serif { font-family: var(--serif); }
+  hr.rule { border: none; border-top: 1px solid var(--rule); margin: 0; }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(249,248,244,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .header-inner {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .logo {
+    display: flex; align-items: baseline; gap: 2px;
+    text-decoration: none;
+  }
+  .logo-main {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: -0.02em;
+  }
+  .logo-dot { color: var(--ink-muted); font-family: var(--sans); font-size: 13px; }
+  .logo-tld { color: var(--ink-muted); font-family: var(--sans); font-size: 13px; font-weight: 300; }
+
+  nav { display: flex; align-items: center; gap: 32px; }
+  nav a {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink-soft);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent);
+    color: var(--white) !important;
+    padding: 8px 18px;
+    border-radius: 2px;
+    font-size: 12px !important;
+    letter-spacing: 0.06em !important;
+  }
+  .nav-cta:hover { background: #1e3f2b; color: var(--white) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 100px 0 80px;
+    border-bottom: 1px solid var(--rule);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 40%; height: 100%;
+    background: linear-gradient(135deg, transparent 60%, var(--accent-pale) 100%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent);
+    margin-bottom: 28px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block; width: 28px; height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(48px, 6vw, 80px);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--ink);
+    max-width: 680px;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 16px;
+    font-weight: 300;
+    color: var(--ink-soft);
+    max-width: 520px;
+    line-height: 1.8;
+    margin-bottom: 44px;
+  }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--white);
+    padding: 13px 28px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: #1e3f2b; transform: translateY(-1px); }
+  .btn-secondary {
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2px;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .btn-secondary:hover { color: var(--accent); border-color: var(--accent); }
+
+  .hero-stats {
+    display: flex; gap: 48px;
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--rule);
+  }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .stat-label {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  /* ── SEARCH ── */
+  .search-section {
+    padding: 64px 0;
+    border-bottom: 1px solid var(--rule);
+    background: var(--white);
+  }
+  .search-label {
+    font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-muted);
+    margin-bottom: 16px;
+  }
+  .search-bar {
+    display: flex;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    max-width: 680px;
+    background: var(--bg);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .search-bar:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(45,90,61,0.08);
+  }
+  .search-bar input {
+    flex: 1;
+    border: none; background: transparent;
+    padding: 16px 20px;
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--ink);
+    outline: none;
+  }
+  .search-bar input::placeholder { color: var(--ink-muted); }
+  .search-bar button {
+    background: var(--accent);
+    color: var(--white);
+    border: none;
+    padding: 0 28px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .search-bar button:hover { background: #1e3f2b; }
+  .search-tags {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-top: 16px;
+  }
+  .tag {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    background: var(--bg-warm);
+    border: 1px solid var(--rule);
+    padding: 4px 12px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+  .tag:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+
+  /* ── BROWSE SECTION ── */
+  .section {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 48px;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 300;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .section-link {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .section-link:hover { border-bottom-color: var(--accent); }
+
+  /* Species grid */
+  .species-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .species-card {
+    background: var(--white);
+    padding: 32px 28px;
+    transition: background 0.2s;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+  }
+  .species-card:hover { background: var(--accent-pale); }
+  .species-icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .species-name {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--ink);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .species-count {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+  }
+
+  /* Organ systems */
+  .systems-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .system-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+    background: var(--white);
+    text-decoration: none;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+  .system-item:nth-child(2n) { border-right: none; }
+  .system-item:nth-last-child(-n+2) { border-bottom: none; }
+  .system-item:hover { background: var(--accent-pale); }
+  .system-name {
+    font-size: 14px; font-weight: 400; color: var(--ink);
+  }
+  .system-arrow {
+    color: var(--ink-muted);
+    font-size: 16px;
+    transition: transform 0.2s, color 0.2s;
+  }
+  .system-item:hover .system-arrow { transform: translateX(3px); color: var(--accent); }
+
+  /* ── DISEASE CATEGORIES ── */
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .cat-card {
+    padding: 28px 24px;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    background: var(--white);
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .cat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+  }
+  .cat-card.infectious::before { background: var(--red); }
+  .cat-card.neoplastic::before { background: var(--gold); }
+  .cat-card.degenerative::before { background: var(--accent); }
+  .cat-card.metabolic::before { background: #5a7a9a; }
+  .cat-card:hover { border-color: var(--ink-soft); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+  .cat-label {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-muted);
+    margin-bottom: 12px;
+    display: block;
+  }
+  .cat-title {
+    font-family: var(--serif);
+    font-size: 22px; font-weight: 400;
+    color: var(--ink);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .cat-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+
+  /* ── FEATURED ENTRY ── */
+  .featured-section {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--rule);
+    background: var(--white);
+  }
+  .featured-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .featured-label {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent);
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 20px;
+  }
+  .featured-label::before {
+    content: ''; display: block;
+    width: 20px; height: 1px; background: var(--accent);
+  }
+  .featured-title {
+    font-family: var(--serif);
+    font-size: 40px; font-weight: 300;
+    color: var(--ink);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+  .featured-subtitle {
+    font-family: var(--serif);
+    font-size: 18px; font-style: italic;
+    color: var(--ink-muted);
+    margin-bottom: 24px;
+  }
+  .featured-meta {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 24px;
+  }
+  .meta-chip {
+    font-size: 11px; font-weight: 400;
+    letter-spacing: 0.04em;
+    color: var(--ink-soft);
+    background: var(--bg-warm);
+    border: 1px solid var(--rule);
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+  .featured-text {
+    font-size: 15px; color: var(--ink-soft); line-height: 1.8;
+    margin-bottom: 28px;
+  }
+  .featured-right { padding-top: 44px; }
+  .findings-list { list-style: none; }
+  .findings-list li {
+    display: flex; gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 14px;
+  }
+  .finding-organ {
+    font-weight: 500; color: var(--ink); min-width: 130px;
+  }
+  .finding-desc { color: var(--ink-soft); font-size: 13px; }
+
+  /* ── RESOURCES ── */
+  .resources-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+  }
+  .resource-card {
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--white);
+    transition: box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .resource-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.07); }
+  .resource-top {
+    height: 6px;
+  }
+  .resource-top.green { background: var(--accent); }
+  .resource-top.amber { background: var(--gold); }
+  .resource-top.red { background: var(--red); }
+  .resource-body { padding: 28px; }
+  .resource-type {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--ink-muted);
+    margin-bottom: 12px;
+  }
+  .resource-title {
+    font-family: var(--serif);
+    font-size: 22px; font-weight: 400;
+    color: var(--ink); margin-bottom: 10px;
+  }
+  .resource-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.7; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer {
+    background: var(--bg-warm);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: 20px 0;
+  }
+  .disclaimer-inner {
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .disclaimer-icon {
+    font-size: 16px; line-height: 1.7; flex-shrink: 0; color: var(--gold);
+  }
+  .disclaimer-text {
+    font-size: 12px; color: var(--ink-muted); line-height: 1.7;
+  }
+  .disclaimer-text strong { color: var(--ink-soft); font-weight: 500; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 56px 0 40px;
+    background: var(--ink);
+    color: var(--white);
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .footer-brand .logo-main { color: #8ab89a; font-size: 20px; }
+  .footer-tagline {
+    font-size: 13px; color: #888; line-height: 1.7;
+    margin-top: 12px; max-width: 240px;
+  }
+  .footer-col h4 {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #666;
+    margin-bottom: 16px;
+  }
+  .footer-col a {
+    display: block; font-size: 13px; color: #aaa;
+    text-decoration: none; margin-bottom: 10px;
+    transition: color 0.15s;
+  }
+  .footer-col a:hover { color: var(--white); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 28px;
+    border-top: 1px solid #333;
+    font-size: 12px; color: #555;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow { animation: fadeUp 0.6s ease both; }
+  .hero h1 { animation: fadeUp 0.6s ease 0.1s both; }
+  .hero-sub { animation: fadeUp 0.6s ease 0.2s both; }
+  .hero-actions { animation: fadeUp 0.6s ease 0.3s both; }
+  .hero-stats { animation: fadeUp 0.6s ease 0.4s both; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .container { padding: 0 24px; }
+    nav { display: none; }
+    .species-grid { grid-template-columns: repeat(2, 1fr); }
+    .categories-grid { grid-template-columns: repeat(2, 1fr); }
+    .featured-inner { grid-template-columns: 1fr; gap: 40px; }
+    .resources-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .hero-stats { gap: 32px; flex-wrap: wrap; }
+    .systems-list { grid-template-columns: 1fr; }
+    .system-item:nth-child(2n) { border-right: none; }
+    .system-item:nth-last-child(-n+2) { border-bottom: 1px solid var(--rule); }
+    .system-item:last-child { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <span class="logo-main">PathVet</span>
+        <span class="logo-dot">.</span>
+        <span class="logo-tld">org</span>
+      </a>
+      <nav>
+        <a href="#browse">Browse</a>
+        <a href="#species">By Species</a>
+        <a href="#systems">Organ Systems</a>
+        <a href="#resources">Resources</a>
+        <a href="#" class="nav-cta">Submit Entry</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Veterinary Pathology Reference</div>
+    <h1>The open atlas of <em>animal disease</em> pathology</h1>
+    <p class="hero-sub">Peer-reviewed disease entries covering gross and histopathological findings across species, organ systems, and disease categories — freely accessible for students, residents, and practitioners.</p>
+    <div class="hero-actions">
+      <a href="#browse" class="btn-primary">Browse Diseases</a>
+      <a href="#species" class="btn-secondary">Browse by Species →</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <span class="stat-num serif">6</span>
+        <span class="stat-label">Species Groups</span>
+      </div>
+      <div>
+        <span class="stat-num serif">9</span>
+        <span class="stat-label">Organ Systems</span>
+      </div>
+      <div>
+        <span class="stat-num serif">4</span>
+        <span class="stat-label">Disease Categories</span>
+      </div>
+      <div>
+        <span class="stat-num serif">Free</span>
+        <span class="stat-label">Always Open Access</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH -->
+<section class="search-section">
+  <div class="container">
+    <div class="search-label">Search Disease Entries</div>
+    <div class="search-bar">
+      <input type="text" placeholder="e.g. enterotoxemia, canine hepatitis, bovine respiratory disease…">
+      <button>Search</button>
+    </div>
+    <div class="search-tags">
+      <span class="tag">Enterotoxemia</span>
+      <span class="tag">Bovine Respiratory Disease</span>
+      <span class="tag">Canine Distemper</span>
+      <span class="tag">Feline Infectious Peritonitis</span>
+      <span class="tag">Equine Colic Lesions</span>
+      <span class="tag">Aflatoxicosis</span>
+      <span class="tag">Lymphoma</span>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIES -->
+<section class="section" id="species">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title serif">Browse by Species</h2>
+      <a href="#" class="section-link">View All →</a>
+    </div>
+    <div class="species-grid">
+      <a href="#" class="species-card">
+        <span class="species-icon">🐄</span>
+        <span class="species-name serif">Bovine</span>
+        <span class="species-count">Cattle · Calves</span>
+      </a>
+      <a href="#" class="species-card">
+        <span class="species-icon">🐕</span>
+        <span class="species-name serif">Canine</span>
+        <span class="species-count">Dogs · Puppies</span>
+      </a>
+      <a href="#" class="species-card">
+        <span class="species-icon">🐈</span>
+        <span class="species-name serif">Feline</span>
+        <span class="species-count">Cats · Kittens</span>
+      </a>
+      <a href="#" class="species-card">
+        <span class="species-icon">🐴</span>
+        <span class="species-name serif">Equine</span>
+        <span class="species-count">Horses · Foals</span>
+      </a>
+      <a href="#" class="species-card">
+        <span class="species-icon">🐑</span>
+        <span class="species-name serif">Small Ruminants</span>
+        <span class="species-count">Ovine · Caprine</span>
+      </a>
+      <a href="#" class="species-card">
+        <span class="species-icon">🐦</span>
+        <span class="species-name serif">Avian</span>
+        <span class="species-count">Poultry · Wild Birds</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ORGAN SYSTEMS -->
+<section class="section" id="systems" style="background: var(--white);">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title serif">Browse by Organ System</h2>
+      <a href="#" class="section-link">View All →</a>
+    </div>
+    <div class="systems-list">
+      <a href="#" class="system-item">
+        <span class="system-name">Cardiovascular System</span>
+        <span class="system-arrow">→</span>
+      </a>
+      <a href="#" class="system-item">
+        <span class="system-name">Respiratory System</span>
+        <span class="system-arrow">→</span>
+      </a>
+      <a href="#" class="system-item">
+        <span class="system-name">Gastrointestinal Tract</span>
+        <span class="system-arrow">→</span>
+      </a>
+      <a href="#" class="system-item">
+        <span class="system-name">Urogenital System</span>
+        <span class="system-arrow">→</span>
+      </a>
+      <a href="#" class="system-item">
+        <span class="system-name">Nervous System</span>
+        <span class="system-arrow">→</span>
+      </a>
+      <a href="#" class="system-item">
+        <span class="system-name">Hepatobiliary System</span>
+        <span class="system-arrow">→</span>
+      </a>
+      <a href="#" class="system-item">
+        <span class="system-name">Musculoskeletal System</span>
+        <span class="system-arrow">→</span>
+      </a>
+      <a href="#" class="system-item">
+        <span class="system-name">Integumentary System</span>
+        <span class="system-arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- DISEASE CATEGORIES -->
+<section class="section" id="browse">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title serif">Disease Categories</h2>
+    </div>
+    <div class="categories-grid">
+      <a href="#" class="cat-card infectious">
+        <span class="cat-label">Category</span>
+        <span class="cat-title serif">Infectious Diseases</span>
+        <p class="cat-desc">Bacterial, viral, fungal, and parasitic diseases — etiology, pathogenesis, and lesion characterization.</p>
+      </a>
+      <a href="#" class="cat-card neoplastic">
+        <span class="cat-label">Category</span>
+        <span class="cat-title serif">Neoplasia</span>
+        <p class="cat-desc">Benign and malignant tumors by tissue of origin, with histological classification and behavior.</p>
+      </a>
+      <a href="#" class="cat-card degenerative">
+        <span class="cat-label">Category</span>
+        <span class="cat-title serif">Degenerative & Toxic</span>
+        <p class="cat-desc">Organ degeneration, toxicoses, and nutritional disorders with gross and microscopic correlates.</p>
+      </a>
+      <a href="#" class="cat-card metabolic">
+        <span class="cat-label">Category</span>
+        <span class="cat-title serif">Metabolic & Congenital</span>
+        <p class="cat-desc">Inherited defects, developmental anomalies, and metabolic disturbances affecting organ function.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED ENTRY -->
+<section class="featured-section">
+  <div class="container">
+    <div class="featured-inner">
+      <div class="featured-left">
+        <div class="featured-label">Featured Disease Entry</div>
+        <h2 class="featured-title serif">Enterotoxemia</h2>
+        <p class="featured-subtitle serif">Pulpy Kidney Disease · Overeating Disease</p>
+        <div class="featured-meta">
+          <span class="meta-chip">Ovine · Caprine</span>
+          <span class="meta-chip">Infectious — Clostridial</span>
+          <span class="meta-chip">GI · Nervous System</span>
+          <span class="meta-chip">Notifiable in some regions</span>
+        </div>
+        <p class="featured-text">
+          Caused by <em>Clostridium perfringens</em> type D, enterotoxemia is a peracute to acute disease of sheep and goats characterized by overgrowth of the organism in the small intestine and elaboration of epsilon toxin. The toxin increases intestinal and vascular permeability, leading to systemic intoxication and rapid death — often without premonitory signs.
+        </p>
+        <a href="#" class="btn-primary">Read Full Entry</a>
+      </div>
+      <div class="featured-right">
+        <div style="font-size:11px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted); margin-bottom:16px;">Key Gross Findings</div>
+        <ul class="findings-list">
+          <li>
+            <span class="finding-organ">Kidneys</span>
+            <span class="finding-desc">Bilateral softening and autolysis — "pulpy" consistency on cut section; cortical pallor</span>
+          </li>
+          <li>
+            <span class="finding-organ">Small intestine</span>
+            <span class="finding-desc">Hemorrhagic enteritis; watery, blood-tinged contents; mucosal congestion</span>
+          </li>
+          <li>
+            <span class="finding-organ">Pericardial sac</span>
+            <span class="finding-desc">Fibrinous pericarditis; straw-colored excess pericardial fluid</span>
+          </li>
+          <li>
+            <span class="finding-organ">Brain</span>
+            <span class="finding-desc">Focal symmetrical encephalomalacia in peracute survivors</span>
+          </li>
+          <li>
+            <span class="finding-organ">Blood glucose</span>
+            <span class="finding-desc">Glucosuria and hyperglycemia at necropsy (ante-mortem indicator)</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section class="section" id="resources">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title serif">Learning Resources</h2>
+    </div>
+    <div class="resources-grid">
+      <div class="resource-card">
+        <div class="resource-top green"></div>
+        <div class="resource-body">
+          <div class="resource-type">Reference</div>
+          <h3 class="resource-title serif">Gross Pathology Atlas</h3>
+          <p class="resource-desc">Curated macroscopic images organized by organ and species, with annotated descriptions of key lesion characteristics.</p>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-top amber"></div>
+        <div class="resource-body">
+          <div class="resource-type">Study Tool</div>
+          <h3 class="resource-title serif">Histopathology Guide</h3>
+          <p class="resource-desc">Microscopic findings with H&E descriptions, special stain guidance, and diagnostic criteria for common conditions.</p>
+        </div>
+      </div>
+      <div class="resource-card">
+        <div class="resource-top red"></div>
+        <div class="resource-body">
+          <div class="resource-type">Case Library</div>
+          <h3 class="resource-title serif">Case Studies</h3>
+          <p class="resource-desc">Real-world necropsy cases presenting history, clinical signs, and pathological findings — ideal for diagnostic reasoning practice.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer">
+  <div class="container">
+    <div class="disclaimer-inner">
+      <span class="disclaimer-icon">⚠</span>
+      <p class="disclaimer-text">
+        <strong>Educational Use Only.</strong> Content on PathVet.org is intended for veterinary education and professional reference. It does not constitute clinical advice. Always consult a licensed veterinary pathologist or veterinarian for diagnostic and clinical decisions. All sources are cited; images are used under open license or are original contributions.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#" class="logo">
+          <span class="logo-main">PathVet</span>
+          <span class="logo-dot" style="color:#555;">.</span>
+          <span class="logo-tld" style="color:#555;">org</span>
+        </a>
+        <p class="footer-tagline">An open-access veterinary pathology reference for students, residents, and practitioners worldwide.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Browse</h4>
+        <a href="#">By Species</a>
+        <a href="#">By Organ System</a>
+        <a href="#">By Disease Type</a>
+        <a href="#">Case Studies</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="#">Gross Atlas</a>
+        <a href="#">Histopathology</a>
+        <a href="#">Glossary</a>
+        <a href="#">Study Guides</a>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <a href="#">About PathVet</a>
+        <a href="#">Submit an Entry</a>
+        <a href="#">Disclaimer</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 PathVet.org — Open-access veterinary pathology reference</span>
+      <span>Educational use only · Not clinical advice</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
